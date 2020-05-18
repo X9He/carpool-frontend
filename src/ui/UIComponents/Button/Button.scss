@@ -1,0 +1,32 @@
+.button-wrapper{
+  position: relative;
+  width: 100px;
+  height: 35px;
+  background-color: #585858;
+  color: white;
+  opacity: 0.6;
+  transition: 0.3s;
+  &:hover {
+    opacity: 1;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.inner-text{
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  width: 100%;
+  text-align: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}

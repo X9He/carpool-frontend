@@ -1,0 +1,20 @@
+.page{
+  position: relative;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.carsContainer{
+  padding: 10px 10px;
+  margin-bottom: 30px;
+  border: 2px solid #e7e7e7;
+}
+
+.addCarRow{
+  margin: 5px 5px;
+  .carTypeMenu{
+    width: 0px;
+  }
+}
+
