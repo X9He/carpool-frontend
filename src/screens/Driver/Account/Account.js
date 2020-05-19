@@ -49,13 +49,14 @@ export default class Account extends Component {
         let loginUrl = Config.API_ROOT + '/login';
         try {
             const response =
-                await axios.post(loginUrl,
-                    {username: this.state.username, password: this.state.password})
+                await axios.post(loginUrl, {},
+                    {auth: {username: this.state.username, password: this.state.password}})
+            console.log(response)
         } catch (e) {
             console.log(e)
         }
         this.setState({
-            hideLoginConfirmModal: true
+            showLoginConfirmModal: true
         })
     }
 
