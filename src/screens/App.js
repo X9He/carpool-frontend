@@ -25,7 +25,7 @@ class App extends Component {
                     <Route path="/" exact render={() => (<CurrentTrip cookies={this.props.cookies}/>)}/>
                     <Route path="/cars" exact component={Cars}/>
                     <Route path="/currenttrip" exact component={CurrentTrip}/>
-                    <Route path="/account" exact component={Account}/>
+                    <Route path="/account" exact render={() => (<Account cookies={this.props.cookies}/>)}/>
                     <Route path="/addtrip" exact component={AddTrip}/>
                     <Route path="/triptimeline" exact component={TripTimeline}/>
                 </div>
@@ -34,8 +34,9 @@ class App extends Component {
     }
 
     syncCookieWithRedux() {
-        if (this.props.cookies.token !== "") {
-            this.props.loginSuccess(this.props.cookies.token)
+        const token = this.props.cookies.get("token");
+        if (token !== "") {
+            this.props.loginSuccess(token)
         }
     }
 }

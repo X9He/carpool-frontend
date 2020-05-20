@@ -7,6 +7,6 @@ import userReducer from "./User/user.reducer";
 export default combineReducers({
     trips: tripsReducer,
     cars: carsReducer,
-    users: userReducer
+    user: userReducer
 });
 

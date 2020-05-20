@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 
 class CurrentTrip extends Component {
     render() {
-        if (this.checkToken()) {
+        if (!this.isLoggedIn()) {
             return <Redirect to='/account'/>
         }
         return (
@@ -13,8 +13,8 @@ class CurrentTrip extends Component {
         );
     }
 
-    checkToken() {
-        return this.props.token !== "";
+    isLoggedIn() {
+        return this.props.user.token !== "";
     }
 }
 

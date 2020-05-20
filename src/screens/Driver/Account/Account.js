@@ -1,13 +1,19 @@
-import React, {Component} from 'react';
+import React, {Component, useDebugValue} from 'react';
 import axios from "axios";
 import * as Config from "../../../config"
 import "./Account.scss"
 import SimpleConfirmModal from "../../../components/Modals/SimpleConfirmModal";
-export default class Account extends Component {
+import {loginSuccess} from "../../../redux/User/user.actions";
+import {withCookies} from "react-cookie";
+import {connect} from "react-redux";
+import {Redirect} from "react-router";
+
+class Account extends Component {
     constructor(props) {
         super(props);
         this.login = this.login.bind(this);
         this.register = this.register.bind(this);
+        this.logout = this.logout.bind(this);
         this.changePassword = this.changePassword.bind(this);
         this.changeUsername = this.changeUsername.bind(this);
         this.finishLogin = this.finishLogin.bind(this);
@@ -25,6 +31,11 @@ export default class Account extends Component {
     }
     render() {
         return (
+            this.props.token !== "" ?
+                <div>
+                    <h2>Hi user, you're logged in!</h2>
+                    <button onClick={this.logout}>Log out</button>
+                </div>:
             <div>
                 <SimpleConfirmModal hidden={!this.state.showLoginConfirmModal} title="Login Success!"
                                     closeModal={this.finishLogin}/>
@@ -51,7 +62,8 @@ export default class Account extends Component {
             const response =
                 await axios.post(loginUrl, {},
                     {auth: {username: this.state.username, password: this.state.password}})
-            console.log(response)
+            this.props.cookies.set("token", response.data.token)
+            this.props.loginSuccess(response.data.token)
         } catch (e) {
             console.log(e)
         }
@@ -74,6 +86,8 @@ export default class Account extends Component {
             const response =
                 await axios.post(registerUrl,
                     { username: this.state.username, password: this.state.password})
+            this.props.cookies.set("token", response.data.token)
+            this.props.loginSuccess(response.data.token)
         } catch (e) {
             switch (e.response.status) {
                 case 409:
@@ -90,6 +104,11 @@ export default class Account extends Component {
         this.setState({
             showRegisterConfirmModal: true
         })
+    }
+
+    logout() {
+        this.props.loginSuccess("");
+        this.props.cookies.set("token", "");
     }
 
     changePassword(password) {
@@ -122,3 +141,15 @@ export default class Account extends Component {
         })
     }
 }
+
+
+const mapStateToProps = state => ({
+    token: state.user.token
+});
+
+const mapDispatchToProps = dispatch => ({
+    loginSuccess: token => dispatch(loginSuccess(token))
+});
+
+
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Account));
