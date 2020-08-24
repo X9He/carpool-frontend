@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {addCar, updateCar} from "../../../redux/Cars/cars.actions";
+import {addCar, fetchCars, updateCar} from "../../../redux/Cars/cars.actions";
+import {withCookies} from "react-cookie";
 import CarCard from "../../../components/CarCard/CarCard";
 import Dropdown from "react-bootstrap/Dropdown";
 import "./Cars.scss"
@@ -29,6 +30,8 @@ class Cars extends Component {
         this.renderCarList = this.renderCarList.bind(this);
         this.changeNumberOfSeats = this.changeNumberOfSeats.bind(this);
         this.setCarType = this.setCarType.bind(this);
+
+        this.props.fetchCars(this.props.cookies.get('token'));
     }
     render() {
         return (
@@ -170,7 +173,7 @@ class Cars extends Component {
 
     renderCarList(){
         let carCards = [];
-        if (this.props.cars.cars.length === 0){
+        if (this.props.cars.cars == null || this.props.cars.cars.length === 0){
             carCards.push(<div>You do not have any cars! Please add one</div>)
         } else {
             for(let i = 0; i < this.props.cars.cars.length; ++i){
@@ -209,8 +212,9 @@ const mapStateToProps = state => ({
 // Function for to redux's reducers
 const mapDispatchToProps = dispatch => ({
     addCar: car => dispatch(addCar(car)),
-    updateCar: car => dispatch(updateCar(car))
+    updateCar: car => dispatch(updateCar(car)),
+    fetchCars: token => dispatch(fetchCars(token))
 });
 
 // Connect current Class with the above two functions
-export default connect(mapStateToProps, mapDispatchToProps)(Cars);
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Cars));
