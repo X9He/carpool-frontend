@@ -1,7 +1,7 @@
 import * as Config from "../../config";
 
-export const addCar = car => ({
-    type: 'ADD_CAR',
+export const addedCar = car => ({
+    type: 'ADDED_CAR',
     payload: car
 });
 
@@ -62,6 +62,26 @@ export function fetchCars(token) {
             )
             .then(json =>
                 dispatch(receiveCars(json))
+            )
+    }
+}
+
+
+export function addCar(token, car) {
+    return function (dispatch) {
+
+        return fetch(Config.API_ROOT + '/cars', {
+            method: 'POST',
+            headers: {
+                'x-access-token': token,
+                body: JSON.stringify(car)
+            }
+        })
+            .then(
+                response => response.json()
+            )
+            .then(json =>
+                dispatch(addedCar(json))
             )
     }
 }

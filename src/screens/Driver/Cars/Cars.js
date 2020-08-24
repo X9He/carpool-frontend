@@ -5,7 +5,6 @@ import {withCookies} from "react-cookie";
 import CarCard from "../../../components/CarCard/CarCard";
 import Dropdown from "react-bootstrap/Dropdown";
 import "./Cars.scss"
-import DropdownButton from "react-bootstrap/DropdownButton";
 import {CarTypes} from "../../../utilities/enums/CarTypes"
 
 class Cars extends Component {
@@ -30,6 +29,8 @@ class Cars extends Component {
         this.renderCarList = this.renderCarList.bind(this);
         this.changeNumberOfSeats = this.changeNumberOfSeats.bind(this);
         this.setCarType = this.setCarType.bind(this);
+        this.changeName = this.changeName.bind(this);
+        this.changeColor = this.changeColor.bind(this);
 
         this.props.fetchCars(this.props.cookies.get('token'));
     }
@@ -56,7 +57,8 @@ class Cars extends Component {
             <div>
                 <div className="addCarRow">
                     <span>Nickname for Car: </span>
-                    <input type="text" value={this.state.name}/>
+                    <input type="text" value={this.state.name}
+                           onChange={(e) => this.changeName(e)}/>
                 </div>
                 <div className="addCarRow">
                     <span>Type of Car: </span>
@@ -83,7 +85,8 @@ class Cars extends Component {
                 </div>
                 <div className="addCarRow">
                     <span>Color of Car: </span>
-                    <input type="text" value={this.state.color}/>
+                    <input type="text" value={this.state.color}
+                           onChange={(e) => this.changeColor(e)}/>
                 </div>
                 <div>
                     <span className="addCarRow">Number of Rows:</span> {this.state.rowCount}
@@ -139,6 +142,18 @@ class Cars extends Component {
         }
     }
 
+    changeName(event) {
+        this.setState({
+            name: event.target.value
+        });
+    }
+
+    changeColor(event) {
+        this.setState({
+            color: event.target.value
+        })
+    }
+
     changeNumberOfSeats(i, event){
         let toStore = parseInt(event.target.value);
         if (event.target.value > 0 &&
@@ -159,8 +174,10 @@ class Cars extends Component {
         for(let i = 0; i < this.state.rowCount; ++i){
             seats.push(new Array(this.state.rows[i]).fill(false))
         }
-        this.props.addCar({
+        this.props.addCar(this.props.cookies.get('token'), {
+            name: this.state.name,
             carType: this.state.carType,
+            color: this.state.color,
             seats: seats
         });
         this.setState((prevState, props) => {
@@ -189,11 +206,13 @@ class Cars extends Component {
             </div>
         )
     }
+
     setCarType(eventKey, event){
         this.setState({
             carType: eventKey
         })
     }
+
     updateCar(car, index){
         let newSeats = [...car.seats];
         newSeats[index] = !newSeats[index];
@@ -211,7 +230,7 @@ const mapStateToProps = state => ({
 
 // Function for to redux's reducers
 const mapDispatchToProps = dispatch => ({
-    addCar: car => dispatch(addCar(car)),
+    addCar: (token, car) => dispatch(addCar(token, car)),
     updateCar: car => dispatch(updateCar(car)),
     fetchCars: token => dispatch(fetchCars(token))
 });

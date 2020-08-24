@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 
 const carsReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case 'ADD_CAR':
+        case 'ADDED_CAR':
             return {
                 ...state,
                 cars: [...state.cars, action.payload]
@@ -25,7 +25,7 @@ const carsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                cars: action.cars
+                cars: action.cars == null ? [] : action.cars
             }
         case REQUEST_CARS:
             return {
