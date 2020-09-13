@@ -72,9 +72,9 @@ export function addCar(token, car) {
 
         return fetch(Config.API_ROOT + '/cars', {
             method: 'POST',
+            body: JSON.stringify(car),
             headers: {
                 'x-access-token': token,
-                body: JSON.stringify(car)
             }
         })
             .then(

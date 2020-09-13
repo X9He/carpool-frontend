@@ -190,7 +190,7 @@ class Cars extends Component {
 
     renderCarList(){
         let carCards = [];
-        if (this.props.cars.cars == null || this.props.cars.cars.length === 0){
+        if (this.props.cars.cars == null || this.props.cars.cars.length === 0) {
             carCards.push(<div>You do not have any cars! Please add one</div>)
         } else {
             for(let i = 0; i < this.props.cars.cars.length; ++i){

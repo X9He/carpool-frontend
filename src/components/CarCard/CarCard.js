@@ -19,7 +19,7 @@ class CarCard extends Component {
         return (
             <div>
                 <div>
-                    {this.props.car.carType}
+                    <b>Car Type:</b> {this.props.car.carType}, <b>Car Name:</b> {this.props.car.name}
                 </div>
                 <div className="seatsWrapper">
                     {this.renderCar(this.props.car)}

@@ -25,7 +25,7 @@ const carsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                cars: action.cars == null ? [] : action.cars
+                cars: action.cars == null ? [] : JSON.parse(action.cars)
             }
         case REQUEST_CARS:
             return {
