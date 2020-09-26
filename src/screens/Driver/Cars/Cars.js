@@ -14,8 +14,8 @@ class Cars extends Component {
         this.state = {
             cars: [],
             name: "",
-            rowCount: 2,
-            rows: [1, 3],
+            rowCount: 0,
+            rows: [],
             plateNumber: "",
             carType: "Please select your car type",
             color: ""
@@ -98,7 +98,12 @@ class Cars extends Component {
                     this.renderRows()
                 }
             </div>
-            <button onClick={this.addCar}>Add Car</button>
+            <div style={{
+                "display": "flex",
+                "flex-direction": "row"}}>
+                <button onClick={this.addCar}>Add Car</button>
+                <div style={{"color": "red", "margin-left": "10px"}}>{this.props.cars.errorMessage}</div>
+            </div>
         </div>)
     }
 
@@ -183,7 +188,13 @@ class Cars extends Component {
         this.setState((prevState, props) => {
             return {
                 ...prevState,
-                car: {}
+                cars: [],
+                name: "",
+                rowCount: 0,
+                rows: [],
+                plateNumber: "",
+                carType: "Please select your car type",
+                color: ""
             }
         })
     }

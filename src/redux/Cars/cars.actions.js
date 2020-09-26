@@ -5,6 +5,11 @@ export const addedCar = car => ({
     payload: car
 });
 
+export const errorMessage = message => ({
+    type: 'CAR_ERROR',
+    payload: message
+});
+
 export const updateCar = car => ({
     type: 'UPDATE_CAR',
     payload: car
@@ -78,10 +83,15 @@ export function addCar(token, car) {
             }
         })
             .then(
-                response => response.json()
+                response => {
+                    if (!response.ok) { throw response }
+                    dispatch(addedCar(response.json()))
+                }
             )
-            .then(json =>
-                dispatch(addedCar(json))
-            )
+            .catch( err => {
+                err.json().then(errJson => {
+                    dispatch(errorMessage(errJson["message"]));
+                })
+            })
     }
 }

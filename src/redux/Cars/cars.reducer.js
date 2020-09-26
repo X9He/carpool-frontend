@@ -6,6 +6,7 @@ import {
 
 const INITIAL_STATE = {
     isFetching: false,
+    errorMessage: "",
     cars: []
 };
 
@@ -31,6 +32,11 @@ const carsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: true
+            }
+        case "CAR_ERROR":
+            return {
+                ...state,
+                errorMessage: action.payload
             }
         default:
             return state;
