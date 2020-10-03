@@ -22,6 +22,11 @@ const carsReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 cars: [...state.cars, action.payload]
             };
+        case 'DELETED_CAR':
+            return {
+                ...state,
+                cars: [...state.cars.filter(car => car._id !== action.payload)]
+            }
         case RECEIVE_CARS:
             return {
                 ...state,

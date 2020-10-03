@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {addCar, fetchCars, updateCar} from "../../../redux/Cars/cars.actions";
+import {addCar, fetchCars, updateCar, deleteCar} from "../../../redux/Cars/cars.actions";
 import {withCookies} from "react-cookie";
 import CarCard from "../../../components/CarCard/CarCard";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -24,6 +24,7 @@ class Cars extends Component {
         this.renderAddCar = this.renderAddCar.bind(this);
         this.renderRows = this.renderRows.bind(this);
         this.addCar = this.addCar.bind(this);
+        this.deleteCar = this.deleteCar.bind(this);
         this.increaseRowCount = this.increaseRowCount.bind(this);
         this.decreaseRowCount = this.decreaseRowCount.bind(this);
         this.renderCarList = this.renderCarList.bind(this);
@@ -69,7 +70,7 @@ class Cars extends Component {
 
                         <Dropdown.Menu>
                             {Object.keys(CarTypes).map((key, i) => (
-                                <Dropdown.Item key={i} eventKey={key} onSelect={this.setCarType}>
+                                <Dropdown.Item key={`carType-${i}`} eventKey={key} onSelect={this.setCarType}>
                                     {key}
                                 </Dropdown.Item>
                             ))}
@@ -100,9 +101,9 @@ class Cars extends Component {
             </div>
             <div style={{
                 "display": "flex",
-                "flex-direction": "row"}}>
+                "flexDirection": "row"}}>
                 <button onClick={this.addCar}>Add Car</button>
-                <div style={{"color": "red", "margin-left": "10px"}}>{this.props.cars.errorMessage}</div>
+                <div style={{"color": "red", "marginLeft": "10px"}}>{this.props.cars.errorMessage}</div>
             </div>
         </div>)
     }
@@ -202,10 +203,10 @@ class Cars extends Component {
     renderCarList(){
         let carCards = [];
         if (this.props.cars.cars == null || this.props.cars.cars.length === 0) {
-            carCards.push(<div>You do not have any cars! Please add one</div>)
+            carCards.push(<div key={`carCard-null`}>You do not have any cars! Please add one</div>)
         } else {
             for(let i = 0; i < this.props.cars.cars.length; ++i){
-                carCards.push(<CarCard car={this.props.cars.cars[i]}/>)
+                carCards.push(<CarCard index={i} car={this.props.cars.cars[i]} deleteCar={this.deleteCar}/>)
             }
         }
         return (
@@ -232,6 +233,10 @@ class Cars extends Component {
             seats: newSeats
         }
     }
+
+    deleteCar(index) {
+        this.props.deleteCar(this.props.cookies.get('token'), this.props.cars.cars[index]["_id"]["$oid"]);
+    }
 }
 
 // Function for redux state
@@ -243,7 +248,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     addCar: (token, car) => dispatch(addCar(token, car)),
     updateCar: car => dispatch(updateCar(car)),
-    fetchCars: token => dispatch(fetchCars(token))
+    fetchCars: token => dispatch(fetchCars(token)),
+    deleteCar: (token, id) => dispatch(deleteCar(token, id))
 });
 
 // Connect current Class with the above two functions

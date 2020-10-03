@@ -17,13 +17,14 @@ class CarCard extends Component {
     }
     render() {
         return (
-            <div>
+            <div key={this.props.car._id} style={{"marginBottom": "30px"}}>
                 <div>
                     <b>Car Type:</b> {this.props.car.carType}, <b>Car Name:</b> {this.props.car.name}
                 </div>
                 <div className="seatsWrapper">
                     {this.renderCar(this.props.car)}
                 </div>
+                <button style={{"height": "30px"}} onClick={() => this.props.deleteCar(this.props.index)}>Delete Car</button>
             </div>
         );
     }

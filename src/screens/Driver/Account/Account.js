@@ -31,7 +31,7 @@ class Account extends Component {
     }
     render() {
         return (
-            this.props.token !== "" ?
+            this.props.token != null && this.props.token !== "" ?
                 <div>
                     <h2>Hi user, you're logged in!</h2>
                     <button onClick={this.logout}>Log out</button>

@@ -15,6 +15,11 @@ export const updateCar = car => ({
     payload: car
 });
 
+export const deletedCar = id => ({
+    type: 'DELETED_CAR',
+    payload: id
+});
+
 export const REQUEST_CARS = 'REQUEST_CARS'
 function requestCars() {
     return {
@@ -71,7 +76,6 @@ export function fetchCars(token) {
     }
 }
 
-
 export function addCar(token, car) {
     return function (dispatch) {
 
@@ -85,7 +89,30 @@ export function addCar(token, car) {
             .then(
                 response => {
                     if (!response.ok) { throw response }
-                    dispatch(addedCar(response.json()))
+                    dispatch(addedCar(car))
+                }
+            )
+            .catch( err => {
+                err.json().then(errJson => {
+                    dispatch(errorMessage(errJson["message"]));
+                })
+            })
+    }
+}
+
+export function deleteCar(token, id) {
+    return function (dispatch) {
+        return fetch(Config.API_ROOT + '/cars', {
+            method: 'DELETE',
+            body: JSON.stringify({"_id": id}),
+            headers: {
+                'x-access-token': token,
+            }
+        })
+            .then(
+                response => {
+                    if (!response.ok) { throw response }
+                    dispatch(deletedCar(id))
                 }
             )
             .catch( err => {
