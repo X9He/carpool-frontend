@@ -4,6 +4,8 @@ import DropdownMenu from "../../../components/DropdownMenu/DropdownMenu";
 import "./AddTrip.scss"
 import Button from "../../../ui/UIComponents/Button/Button";
 import { addTrip } from '../../../redux/Trips/trips.actions.js'
+import {withCookies} from "react-cookie";
+import {fetchCars} from "../../../redux/Cars/cars.actions";
 
 class AddTrip extends Component {
     constructor(props) {
@@ -23,6 +25,8 @@ class AddTrip extends Component {
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
         this.handleCarChange = this.handleCarChange.bind(this);
+
+        this.props.fetchCars(this.props.cookies.get('token'));
     }
     render() {
         return (
@@ -55,7 +59,9 @@ class AddTrip extends Component {
                     <label>
                         Car (select from my cars):
                     </label>
-                    <DropdownMenu value={this.state.car} onChange={this.handleCarChange}/>
+                    <DropdownMenu value={this.state.car} cars={this.props.cars.cars}
+                                  carName={this.state.car != null && this.state.car.name != null ? this.state.car.name : "Choose A Car"}
+                                  handleCarChange={this.handleCarChange}/>
                 </div>
                 <div className="form-group">
                     <Button text="Add Trip"/>
@@ -88,19 +94,21 @@ class AddTrip extends Component {
             startAddress: event.target.value
         })
     }
-    handleCarChange(event){
+    handleCarChange(car){
         this.setState({
-            startAddress: event.target.value
+            car: car
         })
     }
 }
 
 const mapStateToProps = state => ({
-    trips: state.trips
+    trips: state.trips,
+    cars: state.cars
 });
 
 const mapDispatchToProps = dispatch => ({
-    addTrip: trip => dispatch(addTrip(trip))
+    addTrip: trip => dispatch(addTrip(trip)),
+    fetchCars: token => dispatch(fetchCars(token))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTrip);
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AddTrip));

@@ -76,13 +76,6 @@ class Cars extends Component {
                             ))}
                         </Dropdown.Menu>
                     </Dropdown>
-                    {/*<DropdownButton id="dropdown-basic-button" title={this.state.carType}>*/}
-                    {/*    {Object.keys(CarTypes).map((key, i) => (*/}
-                    {/*        <Dropdown.Item key={i} eventKey={key} onSelect={this.setCarType}>*/}
-                    {/*            {key}*/}
-                    {/*        </Dropdown.Item>*/}
-                    {/*    ))}*/}
-                    {/*</DropdownButton>*/}
                 </div>
                 <div className="addCarRow">
                     <span>Color of Car: </span>
@@ -235,7 +228,7 @@ class Cars extends Component {
     }
 
     deleteCar(index) {
-        this.props.deleteCar(this.props.cookies.get('token'), this.props.cars.cars[index]["_id"]["$oid"]);
+        this.props.deleteCar(this.props.cookies.get('token'), this.props.cars.cars[index]._id);
     }
 }
 

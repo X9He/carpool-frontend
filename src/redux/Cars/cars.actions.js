@@ -104,7 +104,7 @@ export function deleteCar(token, id) {
     return function (dispatch) {
         return fetch(Config.API_ROOT + '/cars', {
             method: 'DELETE',
-            body: JSON.stringify({"_id": id}),
+            body: JSON.stringify(id),
             headers: {
                 'x-access-token': token,
             }
@@ -116,9 +116,7 @@ export function deleteCar(token, id) {
                 }
             )
             .catch( err => {
-                err.json().then(errJson => {
-                    dispatch(errorMessage(errJson["message"]));
-                })
+                dispatch(errorMessage(err["message"]));
             })
     }
 }

@@ -31,29 +31,25 @@ class DropdownMenu extends React.Component {
 
     render() {
         return (
-            <div  className="dropdown">
-                <div className="button" onClick={this.showDropdownMenu}> Choose a Car </div>
-
-                { this.state.displayMenu ? (
-                        <ul>
-                            <li>
-                                <a className="active">Nissan Altima</a>
-                            </li>
-                            <li>
-                                <a className="active">Honda Civic</a>
-                            </li>
-                        </ul>
-                    ):
-                    null
-                }
-
+            <div style={{"height": "50px"}} className="dropdown">
+                <div className="button" onClick={this.showDropdownMenu}>
+                    {this.props.carName}
+                </div>
+                { this.state.displayMenu ? this.renderChoices(this.props.cars):null}
             </div>
-
         );
     }
 
-    renderChoices(){
-
+    renderChoices(cars){
+        const allChoices = [];
+        cars.forEach(car => {
+            allChoices.push(<li key={car.name} onClick={() => {
+                console.log("clicked on a menu item")
+                this.props.handleCarChange(car)}}>
+                <a lassName="active">{car.name}</a>
+            </li>)
+        });
+        return (<ul> {allChoices} </ul>);
     }
 }
 
