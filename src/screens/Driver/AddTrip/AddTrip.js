@@ -21,7 +21,7 @@ class AddTrip extends Component {
             car: {}
         };
 
-        this.saveTrip = this.saveTrip.bind(this);
+        this.submitTrip = this.submitTrip.bind(this);
         this.handleStartAddressChange = this.handleStartAddressChange.bind(this);
         this.handleEndAddressChange = this.handleEndAddressChange.bind(this);
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
@@ -71,16 +71,21 @@ class AddTrip extends Component {
                                       carName={this.state.car != null && this.state.car.name != null ? this.state.car.name : "Choose A Car"}
                                       handleCarChange={this.handleCarChange}/>
                     </div>
-                    <div className="form-group">
-                        <Button text="Add Trip"/>
+                    <div onClick={this.submitTrip} className="form-group">
+                        <Button text="Submit"/>
                     </div>
                 </form>
     );
     }
-    saveTrip(){
-        this.props.addTrip({
-            ...this.state
-        });
+    submitTrip(){
+        const tripToBeSubmitted = {
+            carId: this.state.car['_id']['$oid'],
+            startAddress: this.state.startAddress['formatted_address'],
+            endAddress: this.state.endAddress['formatted_address'],
+            startTime: this.state.startTime,
+            endTime: this.state.endTime
+        }
+        this.props.addTrip(this.props.cookies.get("token"), tripToBeSubmitted);
     }
     handleStartAddressChange(address){
         this.setState({
@@ -125,7 +130,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addTrip: trip => dispatch(addTrip(trip)),
+    addTrip: (token, trip) => dispatch(addTrip(token, trip)),
     fetchCars: token => dispatch(fetchCars(token))
 });
 

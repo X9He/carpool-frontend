@@ -34,8 +34,9 @@ export function fetchTrips(token) {
             .then(
                 response => response.json()
             )
-            .then(json =>
-                dispatch(receivedTrips(json))
+            .then(json => {
+                    dispatch(receivedTrips(json))
+                }
             )
     }
 }
@@ -56,9 +57,7 @@ export function addTrip(token, trip) {
                 }
             )
             .catch( err => {
-                err.json().then(errJson => {
-                    dispatch(errorMessage(errJson["message"]));
-                })
+                dispatch(errorMessage(err["message"]));
             })
     }
 }

@@ -44,7 +44,6 @@ class DropdownMenu extends React.Component {
         const allChoices = [];
         cars.forEach(car => {
             allChoices.push(<li key={car.name} onClick={() => {
-                console.log("clicked on a menu item")
                 this.props.handleCarChange(car)}}>
                 <a lassName="active">{car.name}</a>
             </li>)

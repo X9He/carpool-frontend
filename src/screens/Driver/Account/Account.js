@@ -6,7 +6,6 @@ import SimpleConfirmModal from "../../../components/Modals/SimpleConfirmModal";
 import {loginSuccess} from "../../../redux/User/user.actions";
 import {withCookies} from "react-cookie";
 import {connect} from "react-redux";
-import {Redirect} from "react-router";
 
 class Account extends Component {
     constructor(props) {

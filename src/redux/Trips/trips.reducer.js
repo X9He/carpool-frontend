@@ -8,7 +8,7 @@ const tripsReducer = (state = INITIAL_STATE, action) => {
         case 'RECEIVED_TRIPS':
             return {
                 ...state,
-                allTrips: action
+                allTrips: action.trips == null ? [] : JSON.parse(action.trips)
             };
         case 'ADDED_TRIP':
             return {
