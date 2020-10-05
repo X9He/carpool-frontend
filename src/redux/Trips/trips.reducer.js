@@ -5,7 +5,12 @@ const INITIAL_STATE = {
 
 const tripsReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case 'ADD_TRIP':
+        case 'RECEIVED_TRIPS':
+            return {
+                ...state,
+                allTrips: action
+            };
+        case 'ADDED_TRIP':
             return {
                 ...state,
                 allTrips: [...state.allTrips, action.payload]

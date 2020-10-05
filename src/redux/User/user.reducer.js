@@ -11,6 +11,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 token: action.payload
             };
+        case 'REMOVE_TOKEN':
+            return {
+                ...state,
+                token: ""
+            };
         default:
             return state;
     }

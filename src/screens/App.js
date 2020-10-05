@@ -9,7 +9,9 @@ import AddTrip from '../screens/Driver/AddTrip/AddTrip.js';
 import TripTimeline from '../screens/Driver/TripTimeline/TripTimeline.js';
 import {withCookies} from 'react-cookie';
 import {connect} from "react-redux";
-import {loginSuccess} from "../redux/User/user.actions";
+import {loginSuccess, removeToken} from "../redux/User/user.actions";
+import axios from "axios";
+import * as Config from "../config";
 
 class App extends Component {
     constructor(props) {
@@ -35,8 +37,21 @@ class App extends Component {
 
     syncCookieWithRedux() {
         const token = this.props.cookies.get("token");
-        if (token !== "") {
-            this.props.loginSuccess(token)
+        if (token != null && token !== "") {
+            let loginUrl = Config.API_ROOT + '/checkToken';
+            const response =
+                axios.post(loginUrl, {},
+                    {
+                        headers: {
+                            'x-access-token': token
+                        }})
+            response.then(response => {
+                if (response.status === 200) {
+                    this.props.loginSuccess(token)
+                }
+            }).catch(ignore => {
+                this.props.removeToken()
+            })
         }
     }
 }
@@ -46,7 +61,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    loginSuccess: token => dispatch(loginSuccess(token))
+    loginSuccess: token => dispatch(loginSuccess(token)),
+    removeToken: token => dispatch(removeToken(token))
 });
 
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(App));
