@@ -8,6 +8,7 @@ import {withCookies} from "react-cookie";
 import {fetchCars} from "../../../redux/Cars/cars.actions";
 import DateTimePicker from 'react-datetime-picker';
 import SearchBar from "../../../components/SearchBar";
+import CarCard from "../../../components/CarCard/CarCard";
 
 class AddTrip extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class AddTrip extends Component {
         this.handleCarChange = this.handleCarChange.bind(this);
         this.changeStartTime = this.changeStartTime.bind(this);
         this.changeEndTime = this.changeEndTime.bind(this);
+        this.handleSeatChange = this.handleSeatChange.bind(this);
 
         this.props.fetchCars(this.props.cookies.get('token'));
     }
@@ -68,8 +70,14 @@ class AddTrip extends Component {
                             Car (select from my cars):
                         </label>
                         <DropdownMenu value={this.state.car} cars={this.props.cars.cars}
-                                      carName={this.state.car != null && this.state.car.name != null ? this.state.car.name : "Choose A Car"}
+                                      carName={this.state.car != null &&
+                                      this.state.car.name != null ? this.state.car.name : "Choose A Car"}
                                       handleCarChange={this.handleCarChange}/>
+                        { this.state.car.name != null ?
+                                <CarCard index={0} car={this.state.car} selectCarSeat={true}
+                                         handleSeatChange={this.handleSeatChange}/> :
+                                <React.Fragment/>
+                        }
                     </div>
                     <div onClick={this.submitTrip} className="form-group">
                         <Button text="Submit"/>
@@ -78,12 +86,23 @@ class AddTrip extends Component {
     );
     }
     submitTrip(){
+        let bookings = [];
+        this.state.car.seats.forEach(row => {
+            let bookingRow = [];
+            row.forEach(seat => {
+                bookingRow.push("");
+            })
+            bookings.push(bookingRow)
+        });
         const tripToBeSubmitted = {
             carId: this.state.car['_id']['$oid'],
+            carName: this.state.car.name,
             startAddress: this.state.startAddress['formatted_address'],
             endAddress: this.state.endAddress['formatted_address'],
             startTime: this.state.startTime,
-            endTime: this.state.endTime
+            endTime: this.state.endTime,
+            seats: this.state.car.seats,
+            bookings: bookings
         }
         this.props.addTrip(this.props.cookies.get("token"), tripToBeSubmitted);
     }
@@ -110,6 +129,18 @@ class AddTrip extends Component {
     handleCarChange(car){
         this.setState({
             car: car
+        })
+    }
+    handleSeatChange(rowIndex, seatIndex){
+        console.log("handleSeatChange")
+        let newRow = [...this.state.car.seats[rowIndex]]
+        newRow[seatIndex] = !newRow[seatIndex]
+        let newSeats = [...this.state.car.seats]
+        newSeats[rowIndex] = newRow
+        let newCar = {...this.state.car}
+        newCar.seats = newSeats
+        this.setState({
+            car: newCar
         })
     }
     changeStartTime(time) {

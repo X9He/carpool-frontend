@@ -13,8 +13,7 @@ class Seat extends Component {
     }
     render() {
         return (
-            <div className="seat" onClick={this.selectSeat}>
-                {this.state.isEmpty}
+            <div className={this.props.isEmpty ? "enabledSeat" : "disabledSeat"} onClick={this.selectSeat}>
             </div>
         );
     }

@@ -1,7 +1,15 @@
-.seat{
+.enabledSeat{
   height: 45px;
   width: 45px;
-  background-color: burlywood;
+  background-color: #8021c4;
   border: 2px solid black;
   margin: 5px 5px;
 }
+
+.disabledSeat{
+   height: 45px;
+   width: 45px;
+   background-color: #64749b;
+   border: 2px solid black;
+   margin: 5px 5px;
+ }

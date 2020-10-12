@@ -199,7 +199,7 @@ class Cars extends Component {
             carCards.push(<div key={`carCard-null`}>You do not have any cars! Please add one</div>)
         } else {
             for(let i = 0; i < this.props.cars.cars.length; ++i){
-                carCards.push(<CarCard index={i} car={this.props.cars.cars[i]} deleteCar={this.deleteCar}/>)
+                carCards.push(<CarCard index={i} car={this.props.cars.cars[i]} selectCarSeat={false} deleteCar={this.deleteCar}/>)
             }
         }
         return (

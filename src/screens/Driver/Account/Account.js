@@ -1,4 +1,4 @@
-import React, {Component, useDebugValue} from 'react';
+import React, {Component} from 'react';
 import axios from "axios";
 import * as Config from "../../../config"
 import "./Account.scss"
@@ -140,7 +140,6 @@ class Account extends Component {
         })
     }
 }
-
 
 const mapStateToProps = state => ({
     token: state.user.token

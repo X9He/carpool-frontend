@@ -24,7 +24,10 @@ class CarCard extends Component {
                 <div className="seatsWrapper">
                     {this.renderCar(this.props.car)}
                 </div>
-                <button style={{"height": "30px"}} onClick={() => this.props.deleteCar(this.props.index)}>Delete Car</button>
+                {this.props.selectCarSeat === true ?
+                    <button style={{"height": "30px"}}
+                            onClick={() => this.props.deleteCar(this.props.index)}>Delete Car</button>
+                    : <React.Fragment/>}
             </div>
         );
     }
@@ -46,8 +49,9 @@ class CarCard extends Component {
 
     renderRow(row, rowIndex){
         let renderedRow = [];
-        row.map((seat, index) => {
-            renderedRow.push(<Seat key={`${rowIndex}-row=${index}-seat`} seat={seat}/>)
+        row.map((seat, seatIndex) => {
+            renderedRow.push(<Seat key={`${rowIndex}-row=${seatIndex}-seat`} seat={seat} isEmpty={row[seatIndex]}
+                                   onChange={() => this.props.handleSeatChange(rowIndex, seatIndex)}/>)
         });
         return renderedRow;
     }

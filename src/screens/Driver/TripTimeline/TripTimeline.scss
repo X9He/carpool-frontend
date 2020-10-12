@@ -1,0 +1,19 @@
+.all-trips-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+  height: auto;
+  left: 50%;
+  margin-left: -250px;
+  div {
+    width: 500px;
+  }
+}
+
+.trip{
+  border: 1px solid #61dafb;
+  margin-top: 20px;
+}

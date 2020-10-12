@@ -6,7 +6,7 @@ import './NavigationBar.scss';
 const NavigationBar = ()  => {
     return (
         <div className="navbar">
-            <div className="name"><b>Carpool Frontend</b></div>
+            <div className="name"><b>Carpool Planner</b></div>
             <div className="nav-items-container">
                 <NavLink className="navbar-item" activeClassName="active" to="/addtrip">Add Trip</NavLink>
                 <NavLink className="navbar-item" activeClassName="active" to="/currenttrip">Current Trip</NavLink>
