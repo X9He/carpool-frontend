@@ -8,6 +8,10 @@ class TripTimeline extends Component {
     constructor(props) {
         super(props);
         this.props.fetchTrips(this.props.cookies.get('token'));
+        this.state = {
+            uuidList: []
+        }
+
     }
 
     render() {
@@ -22,6 +26,12 @@ class TripTimeline extends Component {
     }
 
     renderOneTrip(trip) {
+        const startTime = new Date(trip.startTime);
+        const startTimeFormatted = startTime.toLocaleTimeString('default',{weekday:'long', year:'numeric', month:'short', day:'numeric'});
+        const endTime = new Date(trip.endTime);
+        const endTimeFormatted = endTime.toLocaleTimeString('default',{weekday:'long', year:'numeric', month:'short', day:'numeric'});
+
+
         return (
             <div className="trip">
                 <div>
@@ -34,15 +44,31 @@ class TripTimeline extends Component {
                 </div>
                 <div>
                     <h4>Starting Time:</h4>
-                    <p>{JSON.stringify(trip.startTime)}</p>
+                    <p>{startTimeFormatted}</p>
                 </div>
                 <div>
                     <h4>Ending Time:</h4>
-                    <p>{JSON.stringify(trip.startTime)}</p>
+                    <p>{endTimeFormatted}</p>
                 </div>
                 <div>
                     <h4>Car Name:</h4>
                     <p>{trip.carName}</p>
+                </div>
+                <div>
+                    <h4>Trip ID:</h4>
+                    <p>{trip.uuid}</p>
+                    <button onClick={()=>{
+                        navigator.clipboard.writeText(trip.uuid)
+                        const uuidListUpdated = [...this.state.uuidList]
+                        console.log(uuidListUpdated)
+                        uuidListUpdated.push(trip.uuid)
+                        this.setState({
+                            ...this.state,
+                            uuidList:uuidListUpdated
+                        })
+
+                    }}>Copy Trip ID</button>
+                    {this.state.uuidList.find(uuid => uuid === trip.uuid)?<span>copied!</span>:null}
                 </div>
             </div>
         )

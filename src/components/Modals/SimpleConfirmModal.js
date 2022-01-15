@@ -9,15 +9,14 @@ class SimpleConfirmModal extends Component {
         };
     }
     render() {
-        return (
-            <div hidden={this.props.hidden} className="modalBackground">
-                <div className="modalContent">
-                    <h4>{this.props.title}</h4>
-                    {/*<p>{this.props.message}</p>*/}
-                    <button onClick={this.props.closeModal}>Confirm</button>
-                </div>
+        return this.props.show ?
+        <div className="modalBackground">
+            <div className="modalContent">
+                <h4>{this.props.title}</h4>
+                {/*<p>{this.props.message}</p>*/}
+                <button onClick={this.props.closeModal}>Confirm</button>
             </div>
-        );
+        </div> : null;
     }
 }
 

@@ -9,6 +9,10 @@ import {fetchCars} from "../../../redux/Cars/cars.actions";
 import DateTimePicker from 'react-datetime-picker';
 import SearchBar from "../../../components/SearchBar";
 import CarCard from "../../../components/CarCard/CarCard";
+import SimpleConfirmModal from "../../../components/Modals/SimpleConfirmModal";
+import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage.component";
+
+import {v4 as uuidv4} from 'uuid';
 
 class AddTrip extends Component {
     constructor(props) {
@@ -19,7 +23,8 @@ class AddTrip extends Component {
             endAddress: "",
             startTime: new Date(),
             endTime: new Date(),
-            car: {}
+            car: {},
+            showSubmitConfirmModal: false
         };
 
         this.submitTrip = this.submitTrip.bind(this);
@@ -82,11 +87,23 @@ class AddTrip extends Component {
                     <div onClick={this.submitTrip} className="form-group">
                         <Button text="Submit"/>
                     </div>
+                    <SimpleConfirmModal title = "Submit Success" show = {this.state.showSubmitConfirmModal}
+                    closeModal = {() => this.setState({...this.state, showSubmitConfirmModal: false})}/>
                 </form>
     );
     }
     submitTrip(){
         let bookings = [];
+        const uuid = uuidv4();
+        let errorMessages = [];
+        let showErrorMessage = false;
+        if (this.state.carName == null) {errorMessages.push("Please select a car!");
+                                    showErrorMessage = true};
+        <ErrorMessage closeMessage={() => this.setState({...this.state, showErrorMessage: false})}
+            message = {errorMessages}
+                        show = {showErrorMessage}
+                        confirm="OK"/>
+        if (showErrorMessage == false) {
         this.state.car.seats.forEach(row => {
             let bookingRow = [];
             row.forEach(seat => {
@@ -102,9 +119,14 @@ class AddTrip extends Component {
             startTime: this.state.startTime,
             endTime: this.state.endTime,
             seats: this.state.car.seats,
-            bookings: bookings
-        }
+            bookings: bookings,
+            uuid: uuid
+        };
         this.props.addTrip(this.props.cookies.get("token"), tripToBeSubmitted);
+        this.setState({
+            ...this.state,
+            showSubmitConfirmModal: true
+        })}
     }
     handleStartAddressChange(address){
         this.setState({
@@ -132,7 +154,6 @@ class AddTrip extends Component {
         })
     }
     handleSeatChange(rowIndex, seatIndex){
-        console.log("handleSeatChange")
         let newRow = [...this.state.car.seats[rowIndex]]
         newRow[seatIndex] = !newRow[seatIndex]
         let newSeats = [...this.state.car.seats]
