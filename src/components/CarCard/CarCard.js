@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Seat from "../Seat/Seat.js";
+import Legend from "../Legend/Legend.component.jsx";
 import "./CarCard.scss"
 
 
@@ -21,8 +22,13 @@ class CarCard extends Component {
                 <div>
                     <b>Car Type:</b> {this.props.car.carType}, <b>Car Name:</b> {this.props.car.name}
                 </div>
-                <div className="seatsWrapper">
-                    {this.renderCar(this.props.car)}
+                <div className='divWithLegend'>
+
+                    <div className="seatsWrapper">
+                        {this.renderCar(this.props.car)}
+                    </div>
+                    <Legend legendTitle='Legend'
+                            legendItem={[{name:'Enabled Seat',color: '#8021c4'}, {name:'Disabled Seat',color: '#64749b'}]}/>
                 </div>
                 {this.props.selectCarSeat === true ?
                     <button style={{"height": "30px"}}

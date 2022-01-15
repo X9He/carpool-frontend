@@ -1,6 +1,9 @@
+import {UserActionTypes} from "./user.types";
+
 const INITIAL_STATE = {
     current_user: {},
-    token: ""
+    token: "",
+    user_type:""
 };
 
 
@@ -15,6 +18,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 token: ""
+            };
+        case UserActionTypes.SET_USER_TYPE:
+            return {
+                ...state,
+                user_type: action.payload
             };
         default:
             return state;
