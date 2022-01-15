@@ -1,0 +1,19 @@
+
+
+.Legend{
+  width: auto;
+  margin: 10px 10px;
+  padding: 10px 10px;
+  background-color: rgba(250, 235, 215, 0.3);
+
+  .legendItem{
+    display: flex;
+
+    .legendBox{
+      height: 20px;
+      width: 20px;
+      border: 2px solid black;
+      margin: 5px 5px;
+    }
+  }
+}

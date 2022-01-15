@@ -7,6 +7,7 @@ import CurrentTrip from '../screens/Driver/CurrentTrip/CurrentTrip.js';
 import Account from '../screens/Driver/Account/Account.js';
 import AddTrip from '../screens/Driver/AddTrip/AddTrip.js';
 import TripTimeline from '../screens/Driver/TripTimeline/TripTimeline.js';
+import Home from '../screens/Home/home.component';
 import {withCookies} from 'react-cookie';
 import {connect} from "react-redux";
 import {loginSuccess, removeToken} from "../redux/User/user.actions";
@@ -24,7 +25,7 @@ class App extends Component {
             <BrowserRouter>
                 <div>
                     <NavigationBar/>
-                    <Route path="/" exact render={() => (<CurrentTrip cookies={this.props.cookies}/>)}/>
+                    <Route path="/" exact component={Home}/>
                     <Route path="/cars" exact component={Cars}/>
                     <Route path="/currenttrip" exact component={CurrentTrip}/>
                     <Route path="/account" exact render={() => (<Account cookies={this.props.cookies}/>)}/>

@@ -30,27 +30,29 @@ class Account extends Component {
     }
     render() {
         return (
-            this.props.token != null && this.props.token !== "" ?
-                <div>
-                    <h2>Hi user, you're logged in!</h2>
-                    <button onClick={this.logout}>Log out</button>
-                </div>:
             <div>
-                <SimpleConfirmModal hidden={!this.state.showLoginConfirmModal} title="Login Success!"
+                {this.props.token != null && this.props.token !== "" ?
+                    <div>
+                        <h2>{`Hi ${this.props.userType}, you're logged in!`}</h2>
+                        <button onClick={this.logout}>Log out</button>
+                    </div>:
+                    <div>
+                        <div className="loginContainer">
+                            <h1>Log in</h1>
+                            <h4>User Name:</h4>
+                            <input type="text" value={this.state.username} onChange={this.changeUsername}/>
+                            <span style={{"color": "red"}} hidden={!this.state.showUserError}>{this.state.userNameErrorMessage}</span>
+                            <h4>Password:</h4>
+                            <input type="password" value={this.state.password} onChange={this.changePassword}/>
+                            <span style={{"color": "red"}} hidden={!this.state.showPasswordError}>{this.state.passwordErrorMessage}</span>
+                            <button onClick={this.login}>Log in</button>
+                            <button onClick={this.register}>Register</button>
+                        </div>
+                    </div>}
+                <SimpleConfirmModal show={this.state.showLoginConfirmModal} title="Login Success!"
                                     closeModal={this.finishLogin}/>
-                <SimpleConfirmModal hidden={!this.state.showRegisterConfirmModal} title="Register Success!"
+                <SimpleConfirmModal show={this.state.showRegisterConfirmModal} title="Register Success!"
                                     closeModal={this.finishRegister}/>
-                <div className="loginContainer">
-                    <h1>Log in</h1>
-                    <h4>User Name:</h4>
-                    <input type="text" value={this.state.username} onChange={this.changeUsername}/>
-                    <span style={{"color": "red"}} hidden={!this.state.showUserError}>{this.state.userNameErrorMessage}</span>
-                    <h4>Password:</h4>
-                    <input type="password" value={this.state.password} onChange={this.changePassword}/>
-                    <span style={{"color": "red"}} hidden={!this.state.showPasswordError}>{this.state.passwordErrorMessage}</span>
-                    <button onClick={this.login}>Log in</button>
-                    <button onClick={this.register}>Register</button>
-                </div>
             </div>
         );
     }
@@ -67,8 +69,11 @@ class Account extends Component {
             console.log(e)
         }
         this.setState({
+            ...this.state,
             showLoginConfirmModal: true
         })
+        console.log(this.state.showLoginConfirmModal)
+        console.log(this.state.showRegisterConfirmModal)
     }
 
     async register() {
@@ -106,6 +111,7 @@ class Account extends Component {
     }
 
     logout() {
+        console.log(this.state.showLoginConfirmModal)
         this.props.loginSuccess("");
         this.props.cookies.set("token", "");
     }
@@ -142,7 +148,8 @@ class Account extends Component {
 }
 
 const mapStateToProps = state => ({
-    token: state.user.token
+    token: state.user.token,
+    userType: state.user.user_type
 });
 
 const mapDispatchToProps = dispatch => ({
